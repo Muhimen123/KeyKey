@@ -1,10 +1,12 @@
 package keykey.component;
 
 import atlantafx.base.controls.Tile;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import keykey.models.KeyDesc;
 
@@ -19,11 +21,22 @@ public class ApplicationTile extends Tile {
         this.getStyleClass().add("application-tile");
 
         this.setOnMouseClicked(event -> {
-            System.out.println("Mouse clicked");
             BorderPane borderPane = (BorderPane) this.getScene().getRoot().lookup("#keybinding");
 
+
             TableView<KeyDesc> tableView = new KeyTable();
-            borderPane.setCenter(tableView);
+
+            TopSection topSection = new TopSection(title);
+
+            VBox content = new VBox();
+            content.getChildren().add(topSection);
+            content.getChildren().add(tableView);
+
+            content.setPadding(new Insets(20));
+            content.setSpacing(20);
+
+            borderPane.setCenter(content);
+
 
             this.handleColorChange(event);
         });

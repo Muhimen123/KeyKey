@@ -1,0 +1,12 @@
+.application-tile {
+    -fx-background-color: -color-dark;
+    -fx-cursor: hand;
+}
+
+.application-tile:hover {
+    -fx-background-color: -color-neutral-emphasis;
+}
+
+.application-tile.selected {
+    -fx-background-color: -color-success-muted;
+}

@@ -1,9 +1,13 @@
 package keykey.models;
 
+import java.util.Arrays;
+
 public class KeyDesc {
     String keys;
     String description;
     String[] platforms;
+
+    public KeyDesc() {}
 
     public KeyDesc(String keys, String description, String[] platform) {
         this.keys = keys;
@@ -29,5 +33,18 @@ public class KeyDesc {
     }
     public void setPlatforms(String[] platforms) {
         this.platforms = platforms;
+    }
+
+    public String toString() {
+
+        return ("Key combination: ") +
+                keys +
+                "\n" +
+                "Description: " +
+                description +
+                "\n" +
+                "Platforms: " +
+                Arrays.toString(platforms) +
+                "\n";
     }
 }

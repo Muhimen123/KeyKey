@@ -1,7 +1,7 @@
 package keykey.component;
 
+import javafx.application.Platform;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -10,10 +10,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import keykey.models.KeyDesc;
 
 public class KeyCombinationPopUp extends VBox {
-    public KeyCombinationPopUp(Parent root) {
+    public KeyCombinationPopUp(Parent root, KeyDesc keyDesc) {
         Text title = new Text("Record Key Combination");
         TextField instruction = new TextField();
         instruction.setPromptText("Click & start typing one key after another to record");
@@ -29,10 +32,9 @@ public class KeyCombinationPopUp extends VBox {
             instruction.setText(keyRecord.toString());
         });
 
-        this.setAlignment(Pos.CENTER_LEFT);
-        this.setSpacing(30);
+        this.setSpacing(25);
 
-        Button continueButton = getButton(root, instruction);
+        Button continueButton = getButton(root, instruction, keyDesc);
 
         Button resetButton = new Button("Reset");
         resetButton.setOnAction(event -> {
@@ -41,18 +43,14 @@ public class KeyCombinationPopUp extends VBox {
         });
 
         Region space = new Region();
-        space.setFocusTraversable(true); // This avoids autofocus on any button
         HBox.setHgrow(space, Priority.ALWAYS);
 
         // Adding the button inside a HBox along with a spacer to push the button on the right side
         HBox buttonHbox = new HBox(space, resetButton, continueButton);
         buttonHbox.setSpacing(10);
 
-        Region dummy = new Region();
-        dummy.setFocusTraversable(true); // This avoids autofocus on the text field so that the prompt text is visible
-        dummy.setMaxHeight(0);
-        dummy.setMaxWidth(0);
-        this.getChildren().addAll(dummy, title, instruction, buttonHbox);
+        this.getChildren().addAll(title, instruction, buttonHbox);
+        Platform.runLater(title::requestFocus);
         this.setPadding(new Insets(15));
 
         BorderStroke borderStroke = new BorderStroke(
@@ -64,19 +62,28 @@ public class KeyCombinationPopUp extends VBox {
         this.setBorder(new Border(borderStroke));
     }
 
-    private static Button getButton(Parent root, TextField instruction) {
+    private static Button getButton(Parent root, TextField instruction, KeyDesc keyDesc) {
         Button continueButton = new Button("Continue");
         continueButton.setOnAction(event -> {
-            System.out.println("User Confirmed the key combination. Final key combination is:");
-            System.out.println(instruction.getText());
-
             Node source = (Node) event.getSource();
             Scene scene = source.getScene();
             Stage owner = (Stage) scene.getWindow();
-            Parent parent = scene.getRoot();
+
+            keyDesc.setKeys(instruction.getText());
+
+
+            Stage popup = new Stage();
+            popup.initOwner(owner);
+            popup.initStyle(StageStyle.UNDECORATED);
+            popup.initModality(Modality.NONE);
+
+            CombDescriptionPopUp combDescriptionPopUp = new CombDescriptionPopUp(keyDesc);
+            Scene popUpScene = new Scene(combDescriptionPopUp, 400, 300);
+            popup.setScene(popUpScene);
+            popup.showAndWait();
 
             root.setEffect(null);
-            owner.close();
+            owner.close(); // Closes this pop up
         });
         return continueButton;
     }

@@ -14,6 +14,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import keykey.models.KeyDesc;
 
 public class TopSection extends HBox {
     public TopSection(String applicationName) {
@@ -22,10 +23,7 @@ public class TopSection extends HBox {
         applicationTitle.setStyle("-fx-font-size: 25px; -fx-fill: white");
 
         Button addNewButton = new Button("Add _New");
-        addNewButton.setOnAction(event -> {
-            System.out.println("Add new button clicked");
-            showKeyCombinationPopUp(event);
-        });
+        addNewButton.setOnAction(this::showKeyCombinationPopUp);
 
         Region spacer = new Region(); // Spacer takes all the available space in between the add new button and heading
         HBox.setHgrow(spacer, Priority.ALWAYS);
@@ -34,7 +32,7 @@ public class TopSection extends HBox {
 
     private void showKeyCombinationPopUp(ActionEvent event) {
         Node source = (Node) event.getSource();
-        Scene rootScene = (Scene) source.getScene();
+        Scene rootScene =  source.getScene();
         Stage owner = (Stage) rootScene.getWindow();
 
         GaussianBlur blur = new GaussianBlur();
@@ -47,7 +45,9 @@ public class TopSection extends HBox {
         popup.initStyle(StageStyle.UNDECORATED); // No window buttons
         popup.initModality(Modality.NONE);
 
-        KeyCombinationPopUp popUpContent = new KeyCombinationPopUp(parent);
+        KeyDesc keyDesc = new KeyDesc();
+
+        KeyCombinationPopUp popUpContent = new KeyCombinationPopUp(parent, keyDesc);
         Scene popUpScene = new Scene(popUpContent, 400, 200);
         popup.setScene(popUpScene);
         popup.show();

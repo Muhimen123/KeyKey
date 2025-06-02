@@ -15,15 +15,10 @@ import java.util.Arrays;
 public class KeyTable extends TableView<KeyDesc> {
     public KeyTable() {
         TableColumn<KeyDesc, String> keyName = new TableColumn<>("Key");
-        keyName.setCellValueFactory(cellData -> {
-            int[] keys = cellData.getValue().getKeys();
-            return new ReadOnlyStringWrapper(Arrays.toString(keys));
-        });
+        keyName.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getKeys()));
 
         TableColumn<KeyDesc, String> keyDesc = new TableColumn<>("Description");
-        keyDesc.setCellValueFactory(cellData -> {
-            return new ReadOnlyStringWrapper(cellData.getValue().getDescription());
-        });
+        keyDesc.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getDescription()));
 
         TableColumn<KeyDesc, String> platforms = new TableColumn<>("Platforms");
         platforms.setCellValueFactory(cellData -> {
@@ -36,14 +31,14 @@ public class KeyTable extends TableView<KeyDesc> {
         this.getColumns().add(platforms);
 
         ObservableList<KeyDesc> keysShortcuts = FXCollections.observableArrayList(
-            new KeyDesc(new int[]{1, 2}, "Just a simple description", new String[]{"Mac", "Linux"}),
-            new KeyDesc(new int[]{1, 2}, "Just a simple description", new String[]{"Mac", "Linux"}),
-            new KeyDesc(new int[]{1, 2}, "Just a simple description", new String[]{"Mac", "Linux"}),
-            new KeyDesc(new int[]{1, 2}, "Just a simple description", new String[]{"Mac", "Linux"}),
-            new KeyDesc(new int[]{1, 2}, "Just a simple description", new String[]{"Mac", "Linux"}),
-            new KeyDesc(new int[]{1, 2}, "Just a simple description", new String[]{"Mac", "Linux"}),
-            new KeyDesc(new int[]{1, 2}, "Just a simple description", new String[]{"Mac", "Linux"}),
-            new KeyDesc(new int[]{1, 2}, "Just a simple description", new String[]{"Mac", "Linux"})
+            new KeyDesc("CMD + SHIFT + A", "Just a simple description", new String[]{"Mac", "Linux"}),
+            new KeyDesc("CMD + SHIFT + A", "Just a simple description", new String[]{"Mac", "Linux"}),
+            new KeyDesc("CMD + SHIFT + A", "Just a simple description", new String[]{"Mac", "Linux"}),
+            new KeyDesc("CMD + SHIFT + A", "Just a simple description", new String[]{"Mac", "Linux"}),
+            new KeyDesc("CMD + SHIFT + A", "Just a simple description", new String[]{"Mac", "Linux"}),
+            new KeyDesc("CMD + SHIFT + A", "Just a simple description", new String[]{"Mac", "Linux"}),
+            new KeyDesc("CMD + SHIFT + A", "Just a simple description", new String[]{"Mac", "Linux"}),
+            new KeyDesc("CMD + SHIFT + A", "Just a simple description", new String[]{"Mac", "Linux"})
         );
 
         this.setItems(keysShortcuts);

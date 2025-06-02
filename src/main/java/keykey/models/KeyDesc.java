@@ -1,17 +1,17 @@
 package keykey.models;
 
 public class KeyDesc {
-    int[] keys;
+    String keys;
     String description;
     String[] platforms;
 
-    public KeyDesc(int[] keys, String description, String[] platform) {
+    public KeyDesc(String keys, String description, String[] platform) {
         this.keys = keys;
         this.description = description;
         this.platforms = platform;
     }
 
-    public int[] getKeys() {
+    public String getKeys() {
         return keys;
     }
     public String getDescription() {
@@ -21,7 +21,7 @@ public class KeyDesc {
         return platforms;
     }
 
-    public void setKeys(int[] keys) {
+    public void setKeys(String keys) {
         this.keys = keys;
     }
     public void setDescription(String description) {

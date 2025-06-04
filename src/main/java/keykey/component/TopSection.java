@@ -23,14 +23,14 @@ public class TopSection extends HBox {
         applicationTitle.setStyle("-fx-font-size: 25px; -fx-fill: white");
 
         Button addNewButton = new Button("Add _New");
-        addNewButton.setOnAction(this::showKeyCombinationPopUp);
+        addNewButton.setOnAction(event -> showKeyCombinationPopUp(applicationName, event));
 
         Region spacer = new Region(); // Spacer takes all the available space in between the add new button and heading
         HBox.setHgrow(spacer, Priority.ALWAYS);
         this.getChildren().addAll(applicationTitle, spacer, addNewButton);
     }
 
-    private void showKeyCombinationPopUp(ActionEvent event) {
+    private void showKeyCombinationPopUp(String application, ActionEvent event) {
         Node source = (Node) event.getSource();
         Scene rootScene =  source.getScene();
         Stage owner = (Stage) rootScene.getWindow();
@@ -47,12 +47,12 @@ public class TopSection extends HBox {
 
         KeyDesc keyDesc = new KeyDesc();
 
-        KeyCombinationPopUp popUpContent = new KeyCombinationPopUp(parent, keyDesc);
+        KeyCombinationPopUp popUpContent = new KeyCombinationPopUp(application, parent, keyDesc);
         Scene popUpScene = new Scene(popUpContent, 400, 200);
         popup.setScene(popUpScene);
         popup.show();
 
-        owner.getScene().addEventFilter(MouseEvent.MOUSE_PRESSED, evt -> {
+        owner.getScene().addEventFilter(MouseEvent.MOUSE_PRESSED, _ -> {
             if (popup.isShowing()) {
                 popup.close();
                 parent.setEffect(null);

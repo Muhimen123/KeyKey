@@ -12,7 +12,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import keykey.models.KeyDesc;
+import keykey.utils.StorageUtil;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,10 +23,10 @@ public class CombDescriptionPopUp extends VBox {
      *
      * @param keyDesc {@link KeyDesc} class that stores all the information related to the key
      */
-    public CombDescriptionPopUp(KeyDesc keyDesc) {
+    public CombDescriptionPopUp(String application, KeyDesc keyDesc) {
         DescriptionInput descriptionInput = new DescriptionInput();
         PlatformPicker platformPicker = new PlatformPicker();
-        ButtonGroup buttonGroup = new ButtonGroup(descriptionInput, platformPicker, keyDesc);
+        ButtonGroup buttonGroup = new ButtonGroup(application, descriptionInput, platformPicker, keyDesc);
 
         this.getChildren().addAll(descriptionInput, platformPicker, buttonGroup);
         this.setSpacing(25);
@@ -86,7 +88,7 @@ class PlatformPicker extends VBox {
 }
 
 class ButtonGroup extends HBox {
-    public ButtonGroup(DescriptionInput desc, PlatformPicker platforms, KeyDesc keyDesc) {
+    public ButtonGroup(String application, DescriptionInput desc, PlatformPicker platforms, KeyDesc keyDesc) {
         Button confirm = new Button("Confirm");
         confirm.getStyleClass().addAll(Styles.BUTTON_OUTLINED, Styles.SUCCESS);
 
@@ -103,7 +105,13 @@ class ButtonGroup extends HBox {
             keyDesc.setDescription(desc.getText());
             keyDesc.setPlatforms(platformsSelected.toArray(new String[0]));
 
-            System.out.println(keyDesc.toString());
+            try {
+                StorageUtil storageUtil = new StorageUtil();
+                storageUtil.WriteKeyDesc(application, keyDesc);
+            } catch (IOException e) {
+                System.err.println("Could not write the new key description to " + application + " " + e.getMessage());
+            }
+
 
             Node source = (Node) event.getSource();
             Scene scene = source.getScene();

@@ -16,7 +16,7 @@ import javafx.stage.StageStyle;
 import keykey.models.KeyDesc;
 
 public class KeyCombinationPopUp extends VBox {
-    public KeyCombinationPopUp(Parent root, KeyDesc keyDesc) {
+    public KeyCombinationPopUp(String application, Parent root, KeyDesc keyDesc) {
         Text title = new Text("Record Key Combination");
         TextField instruction = new TextField();
         instruction.setPromptText("Click & start typing one key after another to record");
@@ -34,7 +34,7 @@ public class KeyCombinationPopUp extends VBox {
 
         this.setSpacing(25);
 
-        Button continueButton = getButton(root, instruction, keyDesc);
+        Button continueButton = getButton(application, root, instruction, keyDesc);
 
         Button resetButton = new Button("Reset");
         resetButton.setOnAction(event -> {
@@ -62,7 +62,7 @@ public class KeyCombinationPopUp extends VBox {
         this.setBorder(new Border(borderStroke));
     }
 
-    private static Button getButton(Parent root, TextField instruction, KeyDesc keyDesc) {
+    private static Button getButton(String application, Parent root, TextField instruction, KeyDesc keyDesc) {
         Button continueButton = new Button("Continue");
         continueButton.setOnAction(event -> {
             Node source = (Node) event.getSource();
@@ -71,13 +71,12 @@ public class KeyCombinationPopUp extends VBox {
 
             keyDesc.setKeys(instruction.getText());
 
-
             Stage popup = new Stage();
             popup.initOwner(owner);
             popup.initStyle(StageStyle.UNDECORATED);
             popup.initModality(Modality.NONE);
 
-            CombDescriptionPopUp combDescriptionPopUp = new CombDescriptionPopUp(keyDesc);
+            CombDescriptionPopUp combDescriptionPopUp = new CombDescriptionPopUp(application, keyDesc);
             Scene popUpScene = new Scene(combDescriptionPopUp, 400, 300);
             popup.setScene(popUpScene);
             popup.showAndWait();

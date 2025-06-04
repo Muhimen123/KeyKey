@@ -1,5 +1,9 @@
 package keykey.models;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
 import java.util.Arrays;
 
 public class KeyDesc {
@@ -33,6 +37,12 @@ public class KeyDesc {
     }
     public void setPlatforms(String[] platforms) {
         this.platforms = platforms;
+    }
+
+    public JsonObject toJson() {
+        Gson gson = new Gson();
+        JsonElement jsonElement = gson.toJsonTree(this);
+        return jsonElement.getAsJsonObject();
     }
 
     public String toString() {

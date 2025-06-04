@@ -9,11 +9,13 @@ import javafx.scene.control.TableView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import keykey.models.KeyDesc;
+import keykey.utils.StorageUtil;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 public class KeyTable extends TableView<KeyDesc> {
-    public KeyTable() {
+    public KeyTable(String application) throws IOException {
         TableColumn<KeyDesc, String> keyName = new TableColumn<>("Key");
         keyName.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getKeys()));
 
@@ -23,23 +25,19 @@ public class KeyTable extends TableView<KeyDesc> {
         TableColumn<KeyDesc, String> platforms = new TableColumn<>("Platforms");
         platforms.setCellValueFactory(cellData -> {
             String[] _platforms = cellData.getValue().getPlatforms();
-            return new ReadOnlyStringWrapper(Arrays.toString(_platforms));
+            String _platform_string = Arrays.toString(_platforms);
+            if(!_platform_string.isEmpty()) {
+                _platform_string = _platform_string.substring(1, _platform_string.length() - 1);
+            }
+            return new ReadOnlyStringWrapper(_platform_string);
         });
 
         this.getColumns().add(keyName);
         this.getColumns().add(keyDesc);
         this.getColumns().add(platforms);
 
-        ObservableList<KeyDesc> keysShortcuts = FXCollections.observableArrayList(
-            new KeyDesc("CMD + SHIFT + A", "Just a simple description", new String[]{"Mac", "Linux"}),
-            new KeyDesc("CMD + SHIFT + A", "Just a simple description", new String[]{"Mac", "Linux"}),
-            new KeyDesc("CMD + SHIFT + A", "Just a simple description", new String[]{"Mac", "Linux"}),
-            new KeyDesc("CMD + SHIFT + A", "Just a simple description", new String[]{"Mac", "Linux"}),
-            new KeyDesc("CMD + SHIFT + A", "Just a simple description", new String[]{"Mac", "Linux"}),
-            new KeyDesc("CMD + SHIFT + A", "Just a simple description", new String[]{"Mac", "Linux"}),
-            new KeyDesc("CMD + SHIFT + A", "Just a simple description", new String[]{"Mac", "Linux"}),
-            new KeyDesc("CMD + SHIFT + A", "Just a simple description", new String[]{"Mac", "Linux"})
-        );
+        StorageUtil storage = new StorageUtil();
+        ObservableList<KeyDesc> keysShortcuts = FXCollections.observableArrayList(storage.ReadAllKeyDescs(application));
 
         this.setItems(keysShortcuts);
 

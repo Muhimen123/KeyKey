@@ -6,9 +6,9 @@ import javafx.scene.Node;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import keykey.models.KeyDesc;
+
 
 /**
  * Application tile is for showing individual application.
@@ -24,7 +24,12 @@ public class ApplicationTile extends Tile {
             BorderPane borderPane = (BorderPane) this.getScene().getRoot().lookup("#keybinding");
 
 
-            TableView<KeyDesc> tableView = new KeyTable();
+            TableView<KeyDesc> tableView = null;
+            try {
+                tableView = new KeyTable(title);
+            } catch (Exception e) {
+                System.err.println("Failed to create table for the appliction: " + title + " || Error:" + e.getMessage());
+            }
 
             TopSection topSection = new TopSection(title);
 

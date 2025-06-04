@@ -1,6 +1,7 @@
 package keykey.utils;
 
 import com.google.gson.GsonBuilder;
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -68,6 +69,21 @@ public class StorageUtil {
     public ArrayList<String> ReadAllApplications() throws FileNotFoundException {
         JsonObject root = JsonParser.parseReader(new FileReader(filePath)).getAsJsonObject();
         return new ArrayList<>(root.keySet());
+    }
+
+    public ArrayList<KeyDesc> ReadAllKeyDescs(String application) throws FileNotFoundException {
+        ArrayList<KeyDesc> keyDescs = new ArrayList<>();
+
+        JsonObject root = JsonParser.parseReader(new FileReader(filePath)).getAsJsonObject();
+        JsonArray applicationArray = root.getAsJsonArray(application);
+
+        Gson gson = new Gson();
+        for(int i = 0; i < applicationArray.size(); i++) {
+            KeyDesc keyDesc = gson.fromJson(applicationArray.get(i), KeyDesc.class);
+            keyDescs.add(keyDesc);
+        }
+
+        return keyDescs;
     }
 
 }

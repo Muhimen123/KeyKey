@@ -108,4 +108,15 @@ public class StorageUtil {
             System.err.println("Couldn't delete keydesc: " + e.getMessage());
         }
     }
+
+    public void DeleteApplication(String application) throws FileNotFoundException {
+        JsonObject root = JsonParser.parseReader(new FileReader(filePath)).getAsJsonObject();
+        root.remove(application);
+
+        try (FileWriter fileWriter = new FileWriter(filePath)) {
+            fileWriter.write(new GsonBuilder().setPrettyPrinting().create().toJson(root));
+        } catch (Exception e) {
+            System.err.println("Couldn't delete applicatiin: " + e.getMessage());
+        }
+    }
 }

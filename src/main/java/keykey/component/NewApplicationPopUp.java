@@ -66,6 +66,13 @@ class InputButtonGroup extends HBox {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+
+            try {
+                Sidebar sidebar = (Sidebar) popupParent.getScene().getRoot().lookup("#sidebar");
+                sidebar.reloadSidebar();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
             closePopup(event, popupParent);
         });
 

@@ -18,8 +18,7 @@ import keykey.models.KeyDesc;
 
 public class TopSection extends HBox {
     public TopSection(String applicationName) {
-
-        Text applicationTitle = new Text(applicationName);
+        Text applicationTitle = new Text(applicationName.toUpperCase());
         applicationTitle.setStyle("-fx-font-size: 25px; -fx-fill: white");
 
         Button addNewButton = new Button("Add _New");

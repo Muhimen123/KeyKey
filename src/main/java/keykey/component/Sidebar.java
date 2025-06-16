@@ -14,15 +14,17 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import keykey.utils.StorageUtil;
 import org.kordamp.ikonli.javafx.FontIcon;
 import org.kordamp.ikonli.material2.Material2MZ;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Sidebar extends VBox {
-
+    ScrollPane scrollpane;
     public Sidebar(ArrayList<String> applications) {
-        ScrollPane scrollpane = new ScrollPane();
+        scrollpane = new ScrollPane();
         VBox box = new VBox();
         box.setId("applications");
 
@@ -39,6 +41,20 @@ public class Sidebar extends VBox {
         scrollpane.setContent(box);
         this.getChildren().addAll(scrollpane, region, addApplication);
         this.setStyle("-fx-background: -color-dark; -fx-background-color: -color-dark;");
+        this.setId("sidebar");
+    }
+
+    public void reloadSidebar() throws IOException {
+        StorageUtil storageUtil = new StorageUtil();
+        ArrayList<String> applications = storageUtil.ReadAllApplications();
+        VBox box = new VBox();
+
+        for(String application : applications) {
+            ApplicationTile applicationTile = new ApplicationTile(application);
+            box.getChildren().add(applicationTile);
+        }
+
+        scrollpane.setContent(box);
     }
 }
 

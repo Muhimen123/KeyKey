@@ -3,12 +3,18 @@ package keykey.component;
 import atlantafx.base.controls.Tile;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import keykey.models.KeyDesc;
+import keykey.utils.StorageUtil;
+
+import java.io.IOException;
 
 
 /**
@@ -23,7 +29,6 @@ public class ApplicationTile extends Tile {
 
         this.setOnMouseClicked(event -> {
             BorderPane borderPane = (BorderPane) this.getScene().getRoot().lookup("#keybinding");
-
             TableView<KeyDesc> tableView = null;
             try {
                 tableView = new KeyTable(title);
@@ -44,6 +49,29 @@ public class ApplicationTile extends Tile {
             borderPane.setCenter(content);
 
             this.handleColorChange(event);
+        });
+
+        this.setOnContextMenuRequested(event -> {
+            ContextMenu contextMenu = new ContextMenu();
+            MenuItem deleteItem = new MenuItem("Delete");
+            deleteItem.setOnAction(e -> {
+                try {
+                    StorageUtil storageUtil = new StorageUtil();
+                    storageUtil.DeleteApplication(title);
+
+                    BorderPane borderPane = (BorderPane) this.getScene().getRoot().lookup("#keybinding");
+                    borderPane.setCenter(new Text("Application Deleted"));
+
+                    Sidebar sidebar = (Sidebar) this.getScene().getRoot().lookup("#sidebar");
+                    sidebar.reloadSidebar();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            });
+
+
+            contextMenu.getItems().add(deleteItem);
+            contextMenu.show(this.getScene().getWindow(), event.getScreenX(), event.getScreenY());
         });
     }
 

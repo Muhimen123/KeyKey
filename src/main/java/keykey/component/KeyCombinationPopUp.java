@@ -14,6 +14,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import keykey.models.KeyDesc;
+import keykey.utils.KeyMap;
 
 public class KeyCombinationPopUp extends VBox {
     public KeyCombinationPopUp(String application, Parent root, KeyDesc keyDesc) {
@@ -23,12 +24,16 @@ public class KeyCombinationPopUp extends VBox {
         instruction.setEditable(false);
 
         StringBuilder keyRecord = new StringBuilder();
+
+        KeyMap keyMap = new KeyMap();
+
         instruction.setOnKeyPressed(event -> {
             instruction.setText("");
             if(!keyRecord.isEmpty()) {
                 keyRecord.append(" + ");
             }
-            keyRecord.append(event.getCode().toString());
+
+            keyRecord.append(keyMap.getKey(event.getCode().toString()));
             instruction.setText(keyRecord.toString());
         });
 

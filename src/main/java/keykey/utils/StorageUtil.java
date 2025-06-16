@@ -86,4 +86,26 @@ public class StorageUtil {
         return keyDescs;
     }
 
+    public void AddApplication(String application) throws FileNotFoundException {
+        JsonObject root = JsonParser.parseReader(new FileReader(filePath)).getAsJsonObject();
+        if(!root.has(application)) {
+            root.add(application, new JsonArray());
+            try (FileWriter fileWriter = new FileWriter(filePath)) {
+                fileWriter.write(new GsonBuilder().setPrettyPrinting().create().toJson(root));
+            } catch (Exception e) {
+                System.err.println("Couldn't write to file: " + e.getMessage());
+            }
+        }
+    }
+
+    public void DeleteKeyDesc(String application, KeyDesc keyDesc) throws FileNotFoundException {
+        JsonObject root = JsonParser.parseReader(new FileReader(filePath)).getAsJsonObject();
+        JsonArray applicationArray = root.getAsJsonArray(application);
+        applicationArray.remove(keyDesc.toJson());
+        try (FileWriter fileWriter = new FileWriter(filePath)) {
+            fileWriter.write(new GsonBuilder().setPrettyPrinting().create().toJson(root));
+        } catch (Exception e) {
+            System.err.println("Couldn't delete keydesc: " + e.getMessage());
+        }
+    }
 }

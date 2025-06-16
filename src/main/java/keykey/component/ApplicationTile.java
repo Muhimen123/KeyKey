@@ -16,13 +16,12 @@ import keykey.models.KeyDesc;
 
 public class ApplicationTile extends Tile {
     public ApplicationTile(String title) {
-        this.setTitle(title);
+        this.setTitle(title.toUpperCase());
         this.setPrefWidth(200);
         this.getStyleClass().add("application-tile");
 
         this.setOnMouseClicked(event -> {
             BorderPane borderPane = (BorderPane) this.getScene().getRoot().lookup("#keybinding");
-
 
             TableView<KeyDesc> tableView = null;
             try {

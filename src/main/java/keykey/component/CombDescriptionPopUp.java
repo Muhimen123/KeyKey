@@ -6,7 +6,6 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -117,6 +116,15 @@ class ButtonGroup extends HBox {
             Node source = (Node) event.getSource();
             Scene scene = source.getScene();
             Stage owner = (Stage) scene.getWindow();
+
+            Stage owner_of_owner = (Stage) owner.getOwner();
+            Stage owner_of_owner_of_owner = (Stage) owner_of_owner.getOwner();
+            KeyTable tableView = (KeyTable) owner_of_owner_of_owner.getScene().getRoot().lookup("#tableView");
+            try {
+                tableView.UpdateTable(application);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
             owner.close(); // Closes this popup
         });
 

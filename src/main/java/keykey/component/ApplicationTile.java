@@ -6,6 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import keykey.models.KeyDesc;
 
@@ -27,7 +28,7 @@ public class ApplicationTile extends Tile {
             try {
                 tableView = new KeyTable(title);
             } catch (Exception e) {
-                System.err.println("Failed to create table for the appliction: " + title + " || Error:" + e.getMessage());
+                System.err.println("Failed to create table for the application: " + title + " || Error:" + e.getMessage());
             }
 
             TopSection topSection = new TopSection(title);
@@ -35,12 +36,12 @@ public class ApplicationTile extends Tile {
             VBox content = new VBox();
             content.getChildren().add(topSection);
             content.getChildren().add(tableView);
+            VBox.setVgrow(tableView, Priority.ALWAYS);
 
             content.setPadding(new Insets(20));
             content.setSpacing(20);
 
             borderPane.setCenter(content);
-
 
             this.handleColorChange(event);
         });

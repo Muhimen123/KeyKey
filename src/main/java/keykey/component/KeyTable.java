@@ -92,7 +92,7 @@ public class KeyTable extends TableView<KeyDesc> {
         this.setId("tableView");
     }
 
-    private void UpdateTable(String application) throws IOException {
+    public void UpdateTable(String application) throws IOException {
         StorageUtil storage = new StorageUtil();
         ObservableList<KeyDesc> keysShortcuts = FXCollections.observableArrayList(storage.ReadAllKeyDescs(application));
         this.setItems(keysShortcuts);

@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
@@ -39,6 +40,14 @@ public class Sidebar extends VBox {
         VBox.setVgrow(region, Priority.ALWAYS);
 
         scrollpane.setContent(box);
+        scrollpane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+
+        scrollpane.addEventFilter(ScrollEvent.SCROLL, event -> {
+            if (event.getDeltaX() != 0) {
+                event.consume(); // block vertical scroll
+            }
+        });
+
         this.getChildren().addAll(scrollpane, region, addApplication);
         this.setStyle("-fx-background: -color-dark; -fx-background-color: -color-dark;");
         this.setId("sidebar");
